@@ -1,0 +1,19 @@
+name: api_testing_flutter_kata
+description: Api integration testing flutter Kata. The main goal is to practice api integration testing using MockWebServer
+version: 0.0.1
+author:
+homepage:
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.12.0+2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
