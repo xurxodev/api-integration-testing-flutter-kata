@@ -15,5 +15,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mock_web_server: ^4.1.1
 
 flutter:

@@ -13,20 +13,20 @@ class TodoApiClient {
   TodoApiClient(this._baseAddress);
 
   Future<List<Task>> getAllTasks() async {
-    final response = await _get("$_baseAddress/todos");
+    final response = await _get("/todos");
 
-    return json
-        .decode(response.body)
-        .map((jsonTask) => Task.fromJson(jsonTask));
+    final decodedTasks = json.decode(response.body) as List;
+
+    return decodedTasks.map((jsonTask) => Task.fromJson(jsonTask)).toList();
   }
 
   Future<http.Response> _get(String endpoint) async {
     try {
       final response = await http.get(
         '$_baseAddress$endpoint',
-        /*headers: {
+        headers: {
           HttpHeaders.acceptHeader: 'application/json',
-        },*/
+        },
       );
 
       return returnResponseOrThrowException(response);
@@ -42,7 +42,7 @@ class TodoApiClient {
     } else if (response.statusCode > 400) {
       throw UnKnowApiException(response.statusCode);
     } else {
-      return json.decode(response.body);
+      return response;
     }
   }
 }
