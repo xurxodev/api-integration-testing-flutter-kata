@@ -7,6 +7,7 @@ import 'api/mock_api.dart';
 
 TodoApiClient _todoApiClient;
 MockApi mockApi = MockApi();
+String anyId = '1';
 
 void main() {
   setUp(() async {
@@ -48,6 +49,45 @@ void main() {
         await mockApi.enqueueMockResponse(httpCode: 454);
 
         expect(() => _todoApiClient.getAllTasks(),
+            throwsA(isInstanceOf<UnKnowApiException>()));
+      });
+    });
+    group('GetTaskById should', () {
+      test('sends get request to the correct endpoint', () async {
+        await mockApi.enqueueMockResponse(fileName: getTaskByIdResponse);
+
+        await _todoApiClient.getTasksById(anyId);
+
+        mockApi.expectRequestSentTo('/todos/$anyId');
+      });
+      test('sends accept header', () async {
+        await mockApi.enqueueMockResponse(fileName: getTaskByIdResponse);
+
+        await _todoApiClient.getTasksById(anyId);
+
+        mockApi.expectRequestContainsHeader('accept', 'application/json');
+      });
+      test('parse current news properly getting all current news', () async {
+        await mockApi.enqueueMockResponse(fileName: getTaskByIdResponse);
+
+        final task = await _todoApiClient.getTasksById(anyId);
+
+        expectTasksContainsExpectedValues(task);
+      });
+      test(
+          'throws ItemNotFoundException if there is no task with the passed id',
+          () async {
+        await mockApi.enqueueMockResponse(httpCode: 404);
+
+        expect(() => _todoApiClient.getTasksById(anyId),
+            throwsA(isInstanceOf<ItemNotFoundException>()));
+      });
+      test(
+          'throws UnknownErrorException if there is not handled error getting news',
+          () async {
+        await mockApi.enqueueMockResponse(httpCode: 454);
+
+        expect(() => _todoApiClient.getTasksById(anyId),
             throwsA(isInstanceOf<UnKnowApiException>()));
       });
     });

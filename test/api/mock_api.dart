@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 
 const getTasksResponse = '/get_tasks_response.json';
+const getTaskByIdResponse = '/get_task_by_id_response.json';
 
 class MockApi {
   MockWebServer _server;

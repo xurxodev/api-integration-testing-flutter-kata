@@ -20,6 +20,12 @@ class TodoApiClient {
     return decodedTasks.map((jsonTask) => Task.fromJson(jsonTask)).toList();
   }
 
+  Future<Task> getTasksById(String id) async {
+    final response = await _get('/todos/$id');
+
+    return Task.fromJson(json.decode(response.body));
+  }
+
   Future<http.Response> _get(String endpoint) async {
     try {
       final response = await http.get(
