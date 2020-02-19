@@ -13,7 +13,7 @@ class TodoApiClient {
   TodoApiClient(this._baseAddress);
 
   Future<List<Task>> getAllTasks() async {
-    final response = await _get("/todos");
+    final response = await _get('/todos');
 
     final decodedTasks = json.decode(response.body) as List;
 

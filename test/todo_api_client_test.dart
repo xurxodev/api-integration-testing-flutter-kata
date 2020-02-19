@@ -19,35 +19,37 @@ void main() {
     mockApi.shutdown();
   });
 
-  group('TodoApiClient should', () {
-    test('sends get request to the correct endpoint', () async {
-      await mockApi.enqueueMockResponse(fileName: getTasksResponse);
+  group('TodoApiClient', () {
+    group('GetAllTasks should', () {
+      test('sends get request to the correct endpoint', () async {
+        await mockApi.enqueueMockResponse(fileName: getTasksResponse);
 
-      await _todoApiClient.getAllTasks();
+        await _todoApiClient.getAllTasks();
 
-      mockApi.expectRequestSentTo('/todos');
-    });
-    test('sends accept header', () async {
-      await mockApi.enqueueMockResponse(fileName: getTasksResponse);
+        mockApi.expectRequestSentTo('/todos');
+      });
+      test('sends accept header', () async {
+        await mockApi.enqueueMockResponse(fileName: getTasksResponse);
 
-      await _todoApiClient.getAllTasks();
+        await _todoApiClient.getAllTasks();
 
-      mockApi.expectRequestContainsHeader('accept', 'application/json');
-    });
-    test('parse current news properly getting all current news', () async {
-      await mockApi.enqueueMockResponse(fileName: getTasksResponse);
+        mockApi.expectRequestContainsHeader('accept', 'application/json');
+      });
+      test('parse current news properly getting all current news', () async {
+        await mockApi.enqueueMockResponse(fileName: getTasksResponse);
 
-      final tasks = await _todoApiClient.getAllTasks();
+        final tasks = await _todoApiClient.getAllTasks();
 
-      expectTasksContainsExpectedValues(tasks[0]);
-    });
-    test(
-        'throws UnknownErrorException if there is not handled error getting news',
-        () async {
-      await mockApi.enqueueMockResponse(httpCode: 454);
+        expectTasksContainsExpectedValues(tasks[0]);
+      });
+      test(
+          'throws UnknownErrorException if there is not handled error getting news',
+          () async {
+        await mockApi.enqueueMockResponse(httpCode: 454);
 
-      expect(() => _todoApiClient.getAllTasks(),
-          throwsA(isInstanceOf<UnKnowApiException>()));
+        expect(() => _todoApiClient.getAllTasks(),
+            throwsA(isInstanceOf<UnKnowApiException>()));
+      });
     });
   });
 }
