@@ -113,6 +113,7 @@ void main() {
     });
 
     group('AddTask should', () {
+
       test('sends get request to the correct endpoint', () async {
         await mockApi.enqueueMockResponse(
             fileName: addTaskResponse, httpCode: 201);
@@ -121,6 +122,7 @@ void main() {
 
         mockApi.expectRequestSentTo('/todos');
       });
+
       test('sends accept header', () async {
         await mockApi.enqueueMockResponse(
             fileName: addTaskResponse, httpCode: 201);
@@ -129,6 +131,7 @@ void main() {
 
         mockApi.expectRequestContainsHeader('accept', 'application/json');
       });
+
       test('sends content-type header', () async {
         await mockApi.enqueueMockResponse(
             fileName: addTaskResponse, httpCode: 201);
@@ -137,6 +140,7 @@ void main() {
 
         mockApi.expectRequestContainsHeader('content-type', 'application/json');
       });
+
       test('sends the correct body adding a new task', () async {
         await mockApi.enqueueMockResponse(
             fileName: addTaskResponse, httpCode: 201);
@@ -145,6 +149,7 @@ void main() {
 
         mockApi.expectRequestContainsBody(addTaskRequest);
       });
+
       test('parse task properly getting all task', () async {
         await mockApi.enqueueMockResponse(
             fileName: addTaskResponse, httpCode: 201);
@@ -153,6 +158,7 @@ void main() {
 
         expectTasksContainsExpectedValues(task);
       });
+
       test(
           'throws UnknownErrorException if there is not handled error getting news',
           () async {
