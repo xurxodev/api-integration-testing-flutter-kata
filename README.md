@@ -1,4 +1,6 @@
-# ![api-integration-testing-flutter-kata](https://user-images.githubusercontent.com/5593590/74655803-44849680-518d-11ea-9a92-f1057c12377b.png)
+# ![api-integration-testing-flutter-kata](https://user-images.githubusercontent.com/5593590/74655803-44849680-518d-11ea-9a92-f1057c12377b.png) 
+[![Codemagic build status](https://api.codemagic.io/apps/5e4d20cdb0845116e2c8e3c1/5e4d20cdb0845116e2c8e3c0/status_badge.svg)](https://codemagic.io/apps/5e4d20cdb0845116e2c8e3c1/5e4d20cdb0845116e2c8e3c0/latest_build)
+
 
 Api integration testing flutter Kata. The main goal is to practice api integration testing using MockWebServer
 
