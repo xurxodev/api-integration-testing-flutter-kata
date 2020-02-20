@@ -38,6 +38,10 @@ class TodoApiClient {
     return Task.fromJson(json.decode(response.body));
   }
 
+  Future<void> deleteTaskById(String id) async {
+    await _delete(id);
+  }
+
   Future<http.Response> _get(String endpoint) async {
     try {
       final response = await http.get(
@@ -79,6 +83,21 @@ class TodoApiClient {
         headers: {
           HttpHeaders.acceptHeader: 'application/json',
           HttpHeaders.contentTypeHeader: 'application/json',
+        },
+      );
+
+      return returnResponseOrThrowException(response);
+    } on IOException  {
+      throw NetworkException();
+    }
+  }
+
+  Future<http.Response> _delete(String id) async {
+    try {
+      final response = await http.delete(
+        '$_baseAddress/todos/$id',
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
         },
       );
 
