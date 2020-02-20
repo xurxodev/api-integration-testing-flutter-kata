@@ -13,4 +13,12 @@ class Task {
         title: json['title'],
         completed: json['completed']);
   }
+
+  Map<String, dynamic> toJson() => {
+    'userId': userId,
+    'id': id,
+    'title': title,
+    'completed': completed,
+  };
+
 }

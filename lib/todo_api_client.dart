@@ -26,12 +26,36 @@ class TodoApiClient {
     return Task.fromJson(json.decode(response.body));
   }
 
+  Future<Task> addTask(Task task) async {
+    final response = await _post(task);
+
+    return Task.fromJson(json.decode(response.body));
+  }
+
   Future<http.Response> _get(String endpoint) async {
     try {
       final response = await http.get(
         '$_baseAddress$endpoint',
         headers: {
           HttpHeaders.acceptHeader: 'application/json',
+        },
+      );
+
+      return returnResponseOrThrowException(response);
+    } on IOException catch (e) {
+      print(e.toString());
+      throw NetworkException();
+    }
+  }
+
+  Future<http.Response> _post(Task task) async {
+    try {
+      final response = await http.post(
+        '$_baseAddress/todos',
+        body: json.encode(task.toJson()) ,
+        headers: {
+          HttpHeaders.acceptHeader: 'application/json',
+          HttpHeaders.contentTypeHeader: 'application/json',
         },
       );
 

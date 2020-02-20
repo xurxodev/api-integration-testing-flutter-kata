@@ -8,6 +8,8 @@ import 'api/mock_api.dart';
 TodoApiClient _todoApiClient;
 MockApi mockApi = MockApi();
 String anyId = '1';
+Task anyTask =
+    Task(id: 1, userId: 1, title: 'Finish this kata', completed: false);
 
 void main() {
   setUp(() async {
@@ -88,6 +90,56 @@ void main() {
         await mockApi.enqueueMockResponse(httpCode: 454);
 
         expect(() => _todoApiClient.getTasksById(anyId),
+            throwsA(isInstanceOf<UnKnowApiException>()));
+      });
+    });
+    group('AddTask should', () {
+      test('sends get request to the correct endpoint', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: addTaskResponse, httpCode: 201);
+
+        await _todoApiClient.addTask(anyTask);
+
+        mockApi.expectRequestSentTo('/todos');
+      });
+      test('sends accept header', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: addTaskResponse, httpCode: 201);
+
+        await _todoApiClient.addTask(anyTask);
+
+        mockApi.expectRequestContainsHeader('accept', 'application/json');
+      });
+      test('sends content-type header', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: addTaskResponse, httpCode: 201);
+
+        await _todoApiClient.addTask(anyTask);
+
+        mockApi.expectRequestContainsHeader('content-type', 'application/json');
+      });
+      test('sends the correct body adding a new task', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: addTaskResponse, httpCode: 201);
+
+        await _todoApiClient.addTask(anyTask);
+
+        mockApi.expectRequestContainsBody(addTaskRequest);
+      });
+      test('parse current news properly getting all current news', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: addTaskResponse, httpCode: 201);
+
+        final task = await _todoApiClient.addTask(anyTask);
+
+        expectTasksContainsExpectedValues(task);
+      });
+      test(
+          'throws UnknownErrorException if there is not handled error getting news',
+          () async {
+        await mockApi.enqueueMockResponse(httpCode: 454);
+
+        expect(() =>  _todoApiClient.addTask(anyTask),
             throwsA(isInstanceOf<UnKnowApiException>()));
       });
     });

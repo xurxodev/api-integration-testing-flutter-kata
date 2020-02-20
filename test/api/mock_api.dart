@@ -5,6 +5,8 @@ import 'package:mock_web_server/mock_web_server.dart';
 
 const getTasksResponse = '/get_tasks_response.json';
 const getTaskByIdResponse = '/get_task_by_id_response.json';
+const addTaskRequest = '/add_task_request.json';
+const addTaskResponse = '/add_task_response.json';
 
 class MockApi {
   MockWebServer _server;
@@ -29,11 +31,6 @@ class MockApi {
     _server.enqueue(body: content, httpCode: httpCode, headers: headers);
   }
 
-  Future<void> enqueueUnauthorizedResponse(
-      {String fileName = '', int httpCode = 200}) async {
-    enqueueMockResponse(httpCode: 401);
-  }
-
   void expectRequestSentTo(String endpoint) {
     final StoredRequest storedRequest = _server.takeRequest();
 
@@ -44,7 +41,14 @@ class MockApi {
     final StoredRequest storedRequest = _getRecordedRequestAtIndex(requestIndex);
     final value = storedRequest.headers[key];
 
-    expect(value, expectedValue);
+    expect(value, contains(expectedValue));
+  }
+
+  Future<void> expectRequestContainsBody(String fileName) async {
+    final expectedBody = await _getContentFromFile(fileName: fileName);
+    final StoredRequest storedRequest = _getRecordedRequestAtIndex(0);
+
+    expect(storedRequest.body, expectedBody);
   }
 
   Future<String> _getContentFromFile(
