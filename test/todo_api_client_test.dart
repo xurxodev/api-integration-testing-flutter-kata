@@ -5,6 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'api/mock_api.dart';
 
+const getTasksResponse = '/get_tasks_response.json';
+const getTaskByIdResponse = '/get_task_by_id_response.json';
+const addTaskRequest = '/add_task_request.json';
+const addTaskResponse = '/add_task_response.json';
+const updateTaskRequest = '/update_task_request.json';
+const updateTaskResponse = '/update_task_response.json';
+
 TodoApiClient _todoApiClient;
 MockApi mockApi = MockApi();
 String anyId = '1';
@@ -142,6 +149,64 @@ void main() {
         expect(() =>  _todoApiClient.addTask(anyTask),
             throwsA(isInstanceOf<UnKnowApiException>()));
       });
+    });
+    group('UpdateTask should', () {
+      test('sends get request to the correct endpoint', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: updateTaskResponse, httpCode: 200);
+
+        await _todoApiClient.updateTask(anyTask);
+
+        mockApi.expectRequestSentTo('/todos/1');
+      });
+      test('sends accept header', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: updateTaskResponse, httpCode: 200);
+
+        await _todoApiClient.updateTask(anyTask);
+
+        mockApi.expectRequestContainsHeader('accept', 'application/json');
+      });
+      test('sends content-type header', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: updateTaskResponse, httpCode: 200);
+
+        await _todoApiClient.updateTask(anyTask);
+
+        mockApi.expectRequestContainsHeader('content-type', 'application/json');
+      });
+      test('sends the correct body adding a new task', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: updateTaskResponse, httpCode: 200);
+
+        await _todoApiClient.updateTask(anyTask);
+
+        mockApi.expectRequestContainsBody(updateTaskRequest);
+      });
+      test('parse current news properly getting all current news', () async {
+        await mockApi.enqueueMockResponse(
+            fileName: updateTaskResponse, httpCode: 200);
+
+        final task = await _todoApiClient.updateTask(anyTask);
+
+        expectTasksContainsExpectedValues(task);
+      });
+      test(
+          'throws ItemNotFoundException if there is no task with the passed id',
+              () async {
+            await mockApi.enqueueMockResponse(httpCode: 404);
+
+            expect(() => _todoApiClient.updateTask(anyTask),
+                throwsA(isInstanceOf<ItemNotFoundException>()));
+          });
+      test(
+          'throws UnknownErrorException if there is not handled error getting news',
+              () async {
+            await mockApi.enqueueMockResponse(httpCode: 454);
+
+            expect(() =>  _todoApiClient.updateTask(anyTask),
+                throwsA(isInstanceOf<UnKnowApiException>()));
+          });
     });
   });
 }
