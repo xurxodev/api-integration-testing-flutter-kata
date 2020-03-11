@@ -62,6 +62,7 @@ There are some links which can be useful to finish these tasks:
 
 * [Flutter Test documentation][fluttertestdoc]
 * [HTTP documentation][httpdoc]
+* [How to create a REST API client and its integration tests in Flutter](https://medium.com/@xurxodev/how-to-create-a-rest-api-client-and-its-integration-tests-in-flutter-924f71e23e0d)
 
 # License
 
